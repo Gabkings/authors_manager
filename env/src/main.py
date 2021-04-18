@@ -3,6 +3,7 @@ import os
 from flask import Flask, jsonify
 from api.config.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from api.utils.responses import response_with
+from api.routes.authors import author_routes
 import api.utils.responses as resp
 
 
@@ -15,6 +16,7 @@ elif os.environ.get('WORK_ENV') == 'TEST':
 else:
     app_config = DevelopmentConfig
     
+app.register_blueprint(author_routes, url_prefix='/api/authors')
     
 # START GLOBAL HTTP CONFIGURATIONS
 @app.after_request
