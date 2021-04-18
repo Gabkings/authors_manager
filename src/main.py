@@ -15,8 +15,10 @@ elif os.environ.get('WORK_ENV') == 'TEST':
     app_config = TestingConfig
 else:
     app_config = DevelopmentConfig
+ 
     
 app.register_blueprint(author_routes, url_prefix='/api/authors')
+  
     
 # START GLOBAL HTTP CONFIGURATIONS
 @app.after_request
