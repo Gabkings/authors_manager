@@ -5,7 +5,7 @@ class Config(object):
 
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://<db_url>:<port>/<db_name>"
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/AuthorsProd'
     SQLALCHEMY_ECHO = False
     JWT_SECRET_KEY = 'JWT-SECRET'
     SECRET_KEY= 'SECRET-KEY'
@@ -15,7 +15,7 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://<db_url>:<port>/<db_name>"
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/AuthorsDev'
     SQLALCHEMY_ECHO = False
     JWT_SECRET_KEY = 'JWT-SECRET'
     SECRET_KEY= 'SECRET-KEY'
@@ -25,7 +25,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_ECHO = False
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://<db_url>:<port>/<db_name>"
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/AuthorsTest'
     SQLALCHEMY_ECHO = False
     JWT_SECRET_KEY = '234562fgssv999099w@@##%$^%^%^$#AASDFJKKKxgdtf'
     SECRET_KEY= 'SECRET-KEY'

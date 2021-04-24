@@ -2,19 +2,24 @@ from flask import Blueprint, request
 
 from api.utils.responses import response_with
 from api.utils import responses as resp
-from api.models.authors import Author, AuthorSchema
+from api.models.books import Book, BookSchema
 from api.utils.database import db
 
-author_routes = Blueprint("author_routes", __name__)
+book_routes = Blueprint("book_routes", __name__)
 
-@author_routes.route('/', methods=['POST'])
-def create_author():
+@book_routes.route('/', methods=['POST'])
+def create_book():
     try:
         data = request.get_json()
-        author_schema = AuthorSchema()
-        author = author_schema.load(data)
-        result = author_schema.dump(author.create())
-        return response_with(resp.SUCCESS_201, value={"author": result})
+        book_schema = BookSchema()
+        book = book_schema.load(data)
+        result = book_schema.dump(book.create())
+        return response_with(resp.SUCCESS_201, value={"book": result})
     except Exception as e:
-        print e 
+        print(e) 
         return response_with(resp.INVALID_INPUT_422)
+
+@book_routes.route('/', methods=['GET'])    
+def fetch_books():
+    pass
+    

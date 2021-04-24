@@ -1,4 +1,5 @@
-import main from main as ApplicationMain
+
+from main import app as application
 
 if __name__ == "__main__":
-    ApplicationMain.run()
+    application.run()

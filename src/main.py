@@ -1,10 +1,12 @@
 import os
-
+import logging
 from flask import Flask, jsonify
 from api.config.config import DevelopmentConfig, ProductionConfig, TestingConfig
 from api.utils.responses import response_with
 from api.routes.authors import author_routes
+from api.routes.books import book_routes
 import api.utils.responses as resp
+from api.utils.database import db
 
 
 app = Flask(__name__)
@@ -15,11 +17,13 @@ elif os.environ.get('WORK_ENV') == 'TEST':
     app_config = TestingConfig
 else:
     app_config = DevelopmentConfig
- 
     
-app.register_blueprint(author_routes, url_prefix='/api/authors')
-  
-    
+app.config.from_object(app_config)
+
+db.init_app(app)
+with app.app_context():
+    db.create_all()
+     
 # START GLOBAL HTTP CONFIGURATIONS
 @app.after_request
 def add_header(response):
@@ -42,13 +46,10 @@ def not_found(e):
 
 # END GLOBAL HTTP CONFIGURATIONS
 
-def create_app(config):
-    app = Flask(__name__)
-    app.config.from_object(config)
-    db.init_app(app)
-    with app.app_context():
-        db.create_all()
-    return app
+
+
+app.register_blueprint(author_routes, url_prefix='/api/authors')
+app.register_blueprint(book_routes, url_prefix='/api/books')
 
 app.config.from_object(app_config)
 
