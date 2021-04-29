@@ -11,6 +11,7 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     first_name = db.Column(db.String(20))
     last_name = db.Column(db.String(20))
+    avatar = db.Column(db.String(200), nullable=True)
     created = db.Column(db.DateTime, server_default=db.func.now())
     books = db.relationship('Book', backref='Author',
                             cascade="all, delete-orphan")

@@ -18,6 +18,7 @@ class ProductionConfig(Config):
     MAIL_PASSWORD= 'redeemed@123'
     MAIL_USE_TLS= False
     MAIL_USE_SSL= True
+    UPLOAD_FOLDER= 'images'
 
 
 
@@ -35,6 +36,7 @@ class DevelopmentConfig(Config):
     MAIL_PASSWORD= 'redeemed@123'
     MAIL_USE_TLS= False
     MAIL_USE_SSL= True
+    UPLOAD_FOLDER= 'images'
 
 
 class TestingConfig(Config):
@@ -52,3 +54,4 @@ class TestingConfig(Config):
     MAIL_PASSWORD= 'redeemed@123'
     MAIL_USE_TLS= False
     MAIL_USE_SSL= True
+    UPLOAD_FOLDER= 'images'

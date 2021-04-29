@@ -25,6 +25,11 @@ app.config.from_object(app_config)
 db.init_app(app)
 with app.app_context():
     db.create_all()
+    
+
+@app.route('/avatar/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'],filename)
 
 # START GLOBAL HTTP CONFIGURATIONS
 
