@@ -1,3 +1,5 @@
+
+import tempfile
 class Config(object):
     DEBUG = True
     TESTING = False
@@ -39,10 +41,13 @@ class DevelopmentConfig(Config):
     UPLOAD_FOLDER= 'images'
 
 
+
+test_db_file = tempfile.mkstemp()[1]
+databse = 'sqlite:///' +test_db_file
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_ECHO = False
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root@localhost/AuthorsTest'
+    SQLALCHEMY_DATABASE_URI = databse
     SQLALCHEMY_ECHO = False
     JWT_SECRET_KEY = '234562fgssv999099w@@##%$^%^%^$#AASDFJKKKxgdtf'
     SECRET_KEY= 'SECRET-KEY'

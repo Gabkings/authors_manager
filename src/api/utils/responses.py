@@ -9,7 +9,7 @@ INVALID_FIELD_NAME_SENT_422 = {
     "message": "Invalid fields found"
 }
 
-INVALID_INPUT_422 = {
+INVALID_INPUT_423 = {
     "http_code": 422,
     "code": "invalidInput",
     "message": "Invalid input"

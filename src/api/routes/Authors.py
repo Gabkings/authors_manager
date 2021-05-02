@@ -21,28 +21,26 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 @author_routes.route('/avatar/<int:author_id>', methods=['POST'])
 @jwt_required()
 def upsert_author_avatar(author_id):
-    # try:
-    file = request.files['avatar']
-    filename = secure_filename(file.filename)
-    file_ext = filename.split(".")[1]
-    print(file_ext)
-    if file_ext not in allowed_extensions:
-        return response_with(resp.INVALID_INPUT_422)
-    else:
+    try:
+        file = request.files['avatar']
         filename = secure_filename(file.filename)
-        file.save(os.path.join(basedir, current_app.config['UPLOAD_FOLDER'], filename))
-        # file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-    get_author = Author.query.get_or_404(author_id)
-    get_author.avatar = url_for('uploaded_file', filename=filename, _external=True)
-    db.session.add(get_author)
-    db.session.commit()
-    author_schema = AuthorSchema()
-    author = author_schema.dump(get_author)
-    return response_with(resp.SUCCESS_200, value={"author": author})
-    # return response_with(resp.SUCCESS_201, value={"author": author})
-    # except Exception as e:
-    #     print(e)
-    #     return response_with(resp.INVALID_FIELD_NAME_SENT_422)
+        file_ext = filename.split(".")[1]
+        if file_ext not in allowed_extensions:
+            return response_with(resp.INVALID_INPUT_423)
+        else:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(basedir, current_app.config['UPLOAD_FOLDER'], filename))
+            # file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        get_author = Author.query.get_or_404(author_id)
+        get_author.avatar = url_for('uploaded_file', filename=filename, _external=True)
+        db.session.add(get_author)
+        db.session.commit()
+        author_schema = AuthorSchema()
+        author = author_schema.dump(get_author)
+        return response_with(resp.SUCCESS_200, value={"author": author})
+    except Exception as e:
+        print(e)
+        return response_with(resp.INVALID_FIELD_NAME_SENT_422)
 
 @author_routes.route('/', methods=['POST'])
 @jwt_required()
@@ -55,7 +53,7 @@ def create_author():
         return response_with(resp.SUCCESS_201, value={"author": result})
     except Exception as e:
         print(e)
-        return response_with(resp.INVALID_INPUT_422)
+        return response_with(resp.INVALID_INPUT_423)
 
 
 @author_routes.route('/', methods=['GET'])

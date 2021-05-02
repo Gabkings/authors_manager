@@ -28,14 +28,57 @@ user_routes = Blueprint("user_routes", __name__)
 #         return response_with(resp.SUCCESS_201)
 #     except Exception as e:
 #         print(e)
-#         return response_with(resp.INVALID_INPUT_422)
+#         return response_with(resp.INVALID_INPUT_423)
     
 @user_routes.route('/', methods=['POST'])
 def create_user():
+    """
+    Create user endpoint
+    ---
+    parameters:
+        - in: body
+        name: body
+        schema:
+            id: UserSignup
+            required:
+                - username
+                - password
+                - email
+        properties:
+            username:
+                type: string
+                description: Unique username of the user
+                default: "Johndoe"
+            password:
+                type: string
+                description: Password of the user
+                default: "somethingstrong"
+            email:
+                type: string
+                description: email of the user
+                default: "someemail@provider.com"
+        responses:
+            201:
+                description: User successfully created
+                schema:
+                    id: UserSignUpSchema
+                    properties:
+                    code:
+                        type: string
+            422:
+                description: Invalid input arguments
+                schema:
+                    id: invalidInput
+                    properties:
+                    code:
+                        type: string
+                    message:
+                        type: string
+    """
     try:
         data = request.get_json()
         if(User.find_by_email(data['email']) is not None or User.find_by_username(data['username']) is not None):
-            return response_with(resp.INVALID_INPUT_422, value={"user already exists"})
+            return response_with(resp.INVALID_INPUT_423, value={"user already exists"})
         data['password'] = User.generate_hash(data['password'])
         user_schmea = UserSchema()
         user = user_schmea.load(data)
@@ -48,7 +91,7 @@ def create_user():
         return response_with(resp.SUCCESS_201)
     except Exception as e:
         print(e)
-        return response_with(resp.INVALID_INPUT_422)
+        return response_with(resp.INVALID_INPUT_423)
 
 
 @user_routes.route('/confirm/<string:token>', methods=['GET'])
@@ -59,7 +102,7 @@ def confirm_email(token):
         return response_with(resp.SERVER_ERROR_401)
     user = User.query.filter_by(email=email).first_or_404()
     if user.isVerified:
-        return response_with(resp.INVALID_INPUT_422)
+        return response_with(resp.INVALID_INPUT_423)
     else:
         user.isVerified = True
         db.session.add(user)
@@ -86,4 +129,4 @@ def authenticate_user():
             return response_with(resp.UNAUTHORIZED_401)
     except Exception as e:
         print(e)
-        return response_with(resp.INVALID_INPUT_422)
+        return response_with(resp.INVALID_INPUT_423)

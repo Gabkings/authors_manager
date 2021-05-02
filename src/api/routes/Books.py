@@ -11,7 +11,7 @@ book_routes = Blueprint("book_routes", __name__)
 
 
 @book_routes.route('/', methods=['POST'])
-# @jwt_required
+@jwt_required()
 def new_book():
     try:
         data = request.get_json()
@@ -21,13 +21,13 @@ def new_book():
         return response_with(resp.SUCCESS_201, value={"book": result})
     except Exception as e:
         print(e)
-        return response_with(resp.INVALID_INPUT_422)
+        return response_with(resp.INVALID_INPUT_423)
 
 
 @book_routes.route('/', methods=['GET'])
 def fetch_books():
     fetched = Book.query.all()
-    book_schema = BookSchema(many=True, only=['author_id','title', 'year'])
+    book_schema = BookSchema(many=True, only=['author_id','title','id', 'year'])
     books = book_schema.dump(fetched)
     return response_with(resp.SUCCESS_200, value={"books": books})
 
